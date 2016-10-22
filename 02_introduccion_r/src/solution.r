@@ -65,35 +65,56 @@ myDataFrame = data.frame(state.center)
 # Ordena las filas de manera descendente con los valores de la primera columna
 # pista: ?order
 
+v1 <- round(runif(800, 0.0, 1.0), digits=2)
+v2 <- 1:800
+v3 <- round(runif(800, 0.0, 1.0), digits=3)
+df <- data.frame(v1,v2,v3)
+df[order(-v1), ]
+
 # Ejercicio 10
 # A partir del data.frame
 h <- as.data.frame(diag(4))
 # Renombra los nombres de las filas para que se llamen i_row (es decir, 1_row, 2_row, ...)
 # y las columnas a j_col (es decir, 1_col, 2_col, ...)
 # pista: puedes utilizar rownames, colnames, nrow, ncol, paste0 y sapply
+rownames(h) <- paste0(seq_len(nrow(h)), "_row")
+colnames(h) <- paste0(seq_len(ncol(h)), "_col")
+h
 
 # Ejercicio 11
 # A partir del dataset VADeaths ya cargado en R
 # a) Comprueba si es un data.frame y si no, conviértelo
-
+is.data.frame(VADeaths)
+df <- as.data.frame(VADeaths)
+is.data.frame(df)
 # b) Crea una una columna Total con la suma de cada fila
-
+df[,"Total" ]<- rowSums(df)
 # c) Cambia de orden las columnas, de forma que Total sea la primera
+df[,c(ncol(df),1:(ncol(df)-1))]
 
 # Ejercicio 12
 # A partir del dataset state.x77 ya cargado en R
 # a) Comprueba si es un data.frame y si no, conviértelo
-
+is.data.frame(state.x77)
+x77.df <- as.data.frame(state.x77)
+is.data.frame(x77.df)
 # b) Extrae el número de estados con un ingreso menor a 4300
-
+x77.df.income <- subset(x77.df, Income < 4300)
+x77.df.income
 # c) Extrae el estado con el ingreso más alto. Pista: ?which
+x77.df[which(x77.df$Income == max(x77.df$Income)),]
 
 # Ejercicio 13
 # A partir del dataset swiss, crea un data.frame únicamente con las filas
 # 1, 2, 3, 10, 11, 12 and 13, y solo con las columnas Examination, Education and Infant.Mortality
+my.df <- swiss[c(1, 2, 3, 10, 11, 12, 13), c("Examination", "Education", "Infant.Mortality")]
 
 # a) La mortalidad infantil de Sarine está mal, debería ser NA, cámbialo.
-
+my.df["Sarine", "Infant.Mortality"] <- NA
+my.df
 # b) Crea una columna Total con la suma de cada fila. Si te encuentras NAs, ignóralos (suman 0)
-
+my.df[,"Total" ]<- rowSums(my.df, TRUE)
+my.df
 # c) Crea una columna of con la proporción de Examination (Examination / Total)
+my.df[,"Exam/Total"] <- my.df["Examination"]/my.df["Total"]
+my.df
